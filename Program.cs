@@ -7,6 +7,7 @@ namespace singleton_demo
 {
     public class Program
     {
+
         static void Main(string[] args)
         {
             Singleton singleton1 = Singleton.GetInstance;
@@ -22,19 +23,23 @@ namespace singleton_demo
     public sealed class Singleton
     {
         private static Singleton instance = null;
+        private static readonly object _lock = new object();
 
         private Singleton()
-        {
-
-        }
+        { }
 
         public static Singleton GetInstance
         {
             get
             {
-                if (instance == null)
-                    instance = new Singleton();
-                return instance;
+                lock (_lock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new Singleton();
+                    }
+                    return instance;
+                }
             }
         }
 
